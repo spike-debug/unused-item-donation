@@ -91,25 +91,53 @@ const Cart = () => {
   const tax = Math.round(total * 0.02);
 
   const handlePlaceOrder = async () => {
-    try {
-      const token = localStorage.getItem("token");
-      const shippingAddress = useNewAddress ? newAddress : savedAddress;
+  if (products.length === 0) {
+    alert("Your cart is empty!");
+    return;
+  }
 
-      const response = await axios.post(
-        "https://unused-item-donation.onrender.com/api/orders",
-        { shippingAddress, paymentMethod },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+  const address = useNewAddress ? newAddress : savedAddress;
 
-      if (response.status === 201) {
-        setProducts([]);
-        window.location.href = "/orders";
+  // Ensure address is complete
+  const requiredFields = ["street", "city", "state", "zipcode", "country"];
+  const isAddressValid = requiredFields.every(
+    (field) => address && address[field]?.trim()
+  );
+
+  if (!isAddressValid) {
+    alert("Please fill in all address fields.");
+    return;
+  }
+
+  try {
+    const token = localStorage.getItem("token");
+    const totalAmount = total + tax;
+
+    const response = await axios.post(
+      "https://unused-item-donation.onrender.com/api/orders",
+      {
+        shippingAddress: address,
+        paymentMethod,
+        totalPrice: totalAmount,
+      },
+      {
+        headers: { Authorization: `Bearer ${token}` },
       }
-    } catch (error) {
-      console.error("Error placing order:", error.message);
-      alert("Order failed. Try again.");
+    );
+
+    if (response.status === 201) {
+      alert("Order placed successfully!");
+      setProducts([]); // clear frontend cart
+      window.location.href = "/orders";
     }
-  };
+  } catch (error) {
+    console.error("Error placing order:", error.message);
+    alert("Order failed. Please try again.");
+  }
+};
+
+
+
 
   return (
     <div className="min-h-screen bg-[#1F1F1F] text-white pt-24 font-poppins px-6">

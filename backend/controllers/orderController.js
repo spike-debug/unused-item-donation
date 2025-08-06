@@ -11,13 +11,12 @@ export const placeOrder = async (req, res) => {
       return res.status(400).json({ message: 'Cart is empty' });
     }
 
-    // Calculate total price using item.price
-    const totalPrice = cart.items.reduce((total, cartItem) => {
-      const price = cartItem.item.price ?? 0;
-      return total + price * cartItem.quantity;
-    }, 0);
+    const { shippingAddress, paymentMethod = 'Cash on Delivery', totalPrice } = req.body;
 
-    const { shippingAddress, paymentMethod = 'Cash on Delivery' } = req.body;
+    // Validate totalPrice
+    if (typeof totalPrice !== 'number' || totalPrice <= 0) {
+      return res.status(400).json({ message: 'Invalid total price' });
+    }
 
     // Validate shipping address fields
     if (
@@ -38,7 +37,7 @@ export const placeOrder = async (req, res) => {
         item: i.item._id,
         quantity: i.quantity,
       })),
-      totalPrice,
+      totalPrice, // ✅ use frontend-calculated offerPrice + tax
       shippingAddress,
       paymentMethod,
     });
