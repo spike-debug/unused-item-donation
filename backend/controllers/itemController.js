@@ -6,26 +6,28 @@ import { validationResult } from "express-validator";
 export const createItem = async (req, res) => {
   try {
     const {
-      name,
-      description,
-      category,
-      imageUrl,
-      status,
-      price,
-      offerPrice,
-      rating
-    } = req.body;
+  name,
+  description,
+  category,
+  status,
+  price,
+  offerPrice,
+  rating
+} = req.body;
 
-    const newItem = new Item({
-      name,
-      description,
-      category,
-      imageUrl,
-      status,
-      price,
-      offerPrice,
-      rating
-    });
+const imageUrl = req.file?.path || ""; // get Cloudinary image URL
+
+const newItem = new Item({
+  name,
+  description,
+  category,
+  imageUrl,
+  status,
+  price,
+  offerPrice,
+  rating
+});
+
 
     const savedItem = await newItem.save();
     res.status(201).json(savedItem);
