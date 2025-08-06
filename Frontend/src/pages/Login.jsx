@@ -23,7 +23,7 @@ export default function Login() {
     setErrorMessage("");
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/login`, {
+      const response = await fetch("https://unused-item-donation.onrender.com/api/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

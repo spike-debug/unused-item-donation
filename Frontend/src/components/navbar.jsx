@@ -21,7 +21,7 @@ const Navbar = () => {
       }
 
       try {
-        const res = await fetch("http://localhost:5000/api/auth/verify-token", {
+        const res = await fetch("https://unused-item-donation.onrender.com/api/auth/verify-token", {
           method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,

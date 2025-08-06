@@ -35,7 +35,7 @@ const handleSubmit = async (e) => {
   try {
     const token = localStorage.getItem('token'); // Get token for auth
 
-    const response = await fetch('http://localhost:5000/api/items', {
+    const response = await fetch('https://unused-item-donation.onrender.com/api/items', {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`, // Required for protected route

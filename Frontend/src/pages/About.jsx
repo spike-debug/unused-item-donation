@@ -12,7 +12,7 @@ const About = () => {
 
       {/* Hero Section */}
       <div className="max-w-4xl mx-auto mb-10">
-        <section className="border-t-4 border-green-400 rounded-md p-6 border border-green-600 shadow-lg text-center">
+        <section className="border-t-4  rounded-md p-6 border border-green-600 shadow-lg text-center">
           <h1 className="text-4xl font-bold text-green-400 mb-2">About Us</h1>
           <p className="text-lg text-gray-300">
             Transforming Clutter into Kindness – One Donation at a Time.

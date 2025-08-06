@@ -14,12 +14,12 @@ const Items = ({ refreshTrigger }) => {
   const fetchItems = async () => {
     try {
       // Fetch all items
-      const itemsRes = await fetch("http://localhost:5000/api/items");
+      const itemsRes = await fetch("https://unused-item-donation.onrender.com/api/items");
       const itemsData = await itemsRes.json();
 
       // Fetch cart data
       const token = localStorage.getItem("token");
-      const cartRes = await fetch("http://localhost:5000/api/cart", {
+      const cartRes = await fetch("https://unused-item-donation.onrender.com/api/cart", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -48,7 +48,7 @@ const Items = ({ refreshTrigger }) => {
   const addToCart = async (itemId, quantity) => {
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/cart", {
+      const res = await fetch("https://unused-item-donation.onrender.com/api/cart", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -69,7 +69,7 @@ const Items = ({ refreshTrigger }) => {
     try {
       const token = localStorage.getItem("token");
       const res = await fetch(
-        `http://localhost:5000/api/cart/remove/${itemId}`,
+        `https://unused-item-donation.onrender.com/api/cart/remove/${itemId}`,
         {
           method: "DELETE",
           headers: {

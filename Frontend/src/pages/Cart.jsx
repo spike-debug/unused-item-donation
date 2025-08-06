@@ -19,7 +19,7 @@ const Cart = () => {
     const fetchCart = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await axios.get("http://localhost:5000/api/cart", {
+        const response = await axios.get("https://unused-item-donation.onrender.com/api/cart", {
           headers: { Authorization: `Bearer ${token}` },
         });
         setProducts(response.data.products || []);
@@ -48,7 +48,7 @@ const Cart = () => {
     try {
       const token = localStorage.getItem("token");
       await axios.put(
-        `http://localhost:5000/api/cart/${updated[index]._id}`,
+        `https://unused-item-donation.onrender.com/api/cart/${updated[index]._id}`,
         {
           quantity: newQuantity,
         },
@@ -66,7 +66,7 @@ const Cart = () => {
 
     try {
       const token = localStorage.getItem("token");
-      await axios.delete(`http://localhost:5000/api/cart/${productId}`, {
+      await axios.delete(`https://unused-item-donation.onrender.com/api/cart/${productId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -96,7 +96,7 @@ const Cart = () => {
       const shippingAddress = useNewAddress ? newAddress : savedAddress;
 
       const response = await axios.post(
-        "http://localhost:5000/api/orders",
+        "https://unused-item-donation.onrender.com/api/orders",
         { shippingAddress, paymentMethod },
         { headers: { Authorization: `Bearer ${token}` } }
       );

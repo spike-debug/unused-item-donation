@@ -11,7 +11,7 @@ const Orders = () => {
       try {
         const token = localStorage.getItem("token");
 
-        const response = await axios.get("http://localhost:5000/api/orders", {
+        const response = await axios.get("https://unused-item-donation.onrender.com/api/orders", {
           headers: { Authorization: `Bearer ${token}` },
         });
 
