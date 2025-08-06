@@ -7,6 +7,10 @@ const Donate = () => {
     condition: '',
     address: '',
     image: null,
+    status: 'available',
+    price: '',
+    offerPrice: '',
+    rating: '',
   });
 
   const handleChange = (e) => {
@@ -18,50 +22,57 @@ const Donate = () => {
     }
   };
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  if (!formData.image) {
-    alert('Please upload an image.');
-    return;
-  }
-
-  const submissionData = new FormData();
-  submissionData.append('name', formData.name);
-  submissionData.append('description', formData.condition); // Treating "condition" as description
-  submissionData.append('category', formData.item);         // Mapping "item" to "category"
-  submissionData.append('image', formData.image);
-
-  try {
-    const token = localStorage.getItem('token'); // Get token for auth
-
-    const response = await fetch('https://unused-item-donation.onrender.com/api/items', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${token}`, // Required for protected route
-      },
-      body: submissionData,
-    });
-
-    if (!response.ok) {
-      throw new Error('Failed to submit donation.');
+    if (!formData.image) {
+      alert('Please upload an image.');
+      return;
     }
 
-    alert('Donation submitted successfully!');
-    setFormData({
-      name: '',
-      item: '',
-      condition: '',
-      address: '',
-      image: null,
-    });
-    document.getElementById('imageInput').value = '';
-  } catch (error) {
-    console.error('Error submitting donation:', error);
-    alert('Failed to submit donation. Please try again.');
-  }
-};
+    const submissionData = new FormData();
+    submissionData.append('name', formData.name);
+    submissionData.append('description', formData.condition); // Treating "condition" as description
+    submissionData.append('category', formData.item);         // Mapping "item" to "category"
+    submissionData.append('image', formData.image);
+    submissionData.append('status', formData.status);
+    submissionData.append('price', formData.price);
+    submissionData.append('offerPrice', formData.offerPrice);
+    submissionData.append('rating', formData.rating);
 
+    try {
+      const token = localStorage.getItem('token');
+
+      const response = await fetch('http://localhost:5000/api/items', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: submissionData,
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to submit donation.');
+      }
+
+      alert('Donation submitted successfully!');
+      setFormData({
+        name: '',
+        item: '',
+        condition: '',
+        address: '',
+        image: null,
+        status: 'available',
+        price: '',
+        offerPrice: '',
+        rating: '',
+      });
+      document.getElementById('imageInput').value = '';
+    } catch (error) {
+      console.error('Error submitting donation:', error);
+      alert('Failed to submit donation. Please try again.');
+    }
+  };
 
   return (
     <div className="min-h-screen bg-[#1F1F1F] text-white flex items-center justify-center px-4 py-10">
@@ -101,7 +112,6 @@ const handleSubmit = async (e) => {
             />
           </div>
 
-
           {/* Condition */}
           <div className="flex items-center gap-4">
             <label className="w-32 text-sm text-gray-300">Condition</label>
@@ -128,6 +138,64 @@ const handleSubmit = async (e) => {
               className="flex-1 bg-[#3A3A3A] placeholder:text-sm placeholder:text-gray-400 text-white p-3 rounded-lg outline-none resize-none focus:ring-2 focus:ring-green-400"
               required
             ></textarea>
+          </div>
+
+          {/* Status */}
+          <div className="flex items-center gap-4">
+            <label className="w-32 text-sm text-gray-300">Status</label>
+            <select
+              name="status"
+              value={formData.status}
+              onChange={handleChange}
+              className="flex-1 bg-[#3A3A3A] text-white p-3 rounded-lg outline-none focus:ring-2 focus:ring-green-400"
+              required
+            >
+              <option value="available">Available</option>
+              <option value="requested">Requested</option>
+              <option value="claimed">Claimed</option>
+            </select>
+          </div>
+
+          {/* Price */}
+          <div className="flex items-center gap-4">
+            <label className="w-32 text-sm text-gray-300">Price</label>
+            <input
+              type="number"
+              name="price"
+              value={formData.price}
+              onChange={handleChange}
+              placeholder="Enter price (optional)"
+              className="flex-1 bg-[#3A3A3A] placeholder:text-sm placeholder:text-gray-400 text-white p-3 rounded-lg outline-none focus:ring-2 focus:ring-green-400"
+            />
+          </div>
+
+          {/* Offer Price */}
+          <div className="flex items-center gap-4">
+            <label className="w-32 text-sm text-gray-300">Offer Price</label>
+            <input
+              type="number"
+              name="offerPrice"
+              value={formData.offerPrice}
+              onChange={handleChange}
+              placeholder="Offer price (optional)"
+              className="flex-1 bg-[#3A3A3A] placeholder:text-sm placeholder:text-gray-400 text-white p-3 rounded-lg outline-none focus:ring-2 focus:ring-green-400"
+            />
+          </div>
+
+          {/* Rating */}
+          <div className="flex items-center gap-4">
+            <label className="w-32 text-sm text-gray-300">Rating</label>
+            <input
+              type="number"
+              name="rating"
+              value={formData.rating}
+              onChange={handleChange}
+              placeholder="0 to 5"
+              min="0"
+              max="5"
+              step="0.1"
+              className="flex-1 bg-[#3A3A3A] placeholder:text-sm placeholder:text-gray-400 text-white p-3 rounded-lg outline-none focus:ring-2 focus:ring-green-400"
+            />
           </div>
 
           {/* Image Upload */}
